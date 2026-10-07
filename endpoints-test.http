@@ -1,0 +1,47 @@
+### 1. Estado del servidor
+GET http://localhost/api/
+
+### 2. Listar usuarios
+GET http://localhost/api/users
+
+### 3. Obtener usuario por ID (Cambia el 1 por el ID de un usuario existente)
+GET http://localhost/api/users/1
+
+### 4. Healthcheck
+GET http://localhost/api/health
+
+### 5. Crear usuario
+POST http://localhost/api/users
+Content-Type: application/json
+
+{
+    "name": "Andrea Gomez",
+    "email": "andrea@example.com"
+}
+
+### 6. Eco de datos
+POST http://localhost/api/echo
+Content-Type: application/json
+
+{
+    "mensaje": "Hola, este es un mensaje de prueba para el profesor",
+    "fecha": "2023-10-25"
+}
+
+### 7. Hacer backup de la BD
+POST http://localhost/api/backup
+
+### 8. Actualizar usuario (Reemplaza el 1 por el ID real que quieres actualizar)
+PUT http://localhost/api/users/1
+Content-Type: application/json
+
+{
+    "name": "Andrea (Nombre Modificado)",
+    "email": "andrea_nueva@example.com"
+}
+
+### 9. Eliminar usuario por ID (Reemplaza el 1 por el ID real a borrar)
+DELETE http://localhost/api/users/1
+
+### 10. Vaciar toda la base de datos (¡Cuidado!)
+DELETE http://localhost/api/empty

@@ -1,0 +1,95 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.5cm}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{xcolor}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge \textbf{Institución Educativa}}\\[1cm]
+    {\LARGE \textbf{Materia: Gestión del Proceso de Desarrollo de Software}}\\[1.5cm]
+    
+    {\Large \textbf{Proyecto Integrador: Pipeline CI/CD Automatizado para API REST con Docker, GitHub Actions y AWS EC2}}\\[2cm]
+    
+    {\large \textbf{Presentado por:}}\\[0.5cm]
+    {\large \textbf{[Nombre del Alumno]}}\\[2cm]
+    
+    {\large \textbf{Profesor:}}\\[0.5cm]
+    {\large \textbf{[Nombre del Profesor]}}\\[3cm]
+    
+    \vfill
+    {\large \today}
+\end{titlepage}
+
+\newpage
+
+\section*{Introducción}
+El presente reporte describe el desarrollo e implementación del proyecto integrador cuyo objetivo central es establecer un flujo de trabajo continuo, automatizado y profesional (Pipeline CI/CD) para el ciclo de vida de una API REST. En la actualidad, el desarrollo ágil de software exige metodologías que permitan desplegar cambios rápidamente y con la más alta confiabilidad, mitigando el margen de error humano en los entornos de producción. La integración y el despliegue continuos (CI/CD) surgen como pilares de la filosofía DevOps, permitiendo la integración constante de código, su respectiva prueba automatizada y la liberación a producción sin tiempos de inactividad perceptibles.
+
+En este contexto, la aplicación desarrollada consiste en una API REST construida con Node.js y Express, con una arquitectura escalable diseñada para interactuar con al menos 6 endpoints funcionales. Esta arquitectura es respaldada por una base de datos local SQLite y una batería de pruebas exhaustivas elaboradas con Jest y Supertest, alcanzando un umbral de cobertura (Code Coverage) de más del 70\%. Posteriormente, el proyecto incluye un proceso de contenedorización mediante Docker. El uso de Docker facilita la creación de un entorno estándar, inmutable y portátil. 
+
+La automatización de la integración y entrega se gestionó empleando GitHub Actions. Este proveedor de servicios de CI/CD evalúa cada nuevo cambio introducido a la rama principal (push/pull request), ejecuta los tests unitarios para validar la funcionalidad y ensambla una imagen Docker de forma automatizada, la cual es publicada en Docker Hub de manera segura. Finalmente, el pipeline procede al despliegue continuo (CD) al conectarse, vía SSH y empleando secretos para máxima seguridad, a una instancia virtual de AWS EC2 (Ubuntu Server), donde se actualiza la versión del contenedor, reflejando así de inmediato las mejoras para los usuarios finales. En resumen, este documento detalla todo el proceso abordado, demostrando las ventajas, retos superados y buenas prácticas inherentes a la automatización de la infraestructura moderna de desarrollo de software.
+
+\newpage
+
+\section*{Resultados y Desarrollo}
+
+\subsection*{1. Desarrollo del Backend y Pruebas (CI)}
+El código fuente de la aplicación, ubicado en \texttt{index.js}, expone un conjunto de al menos 6 endpoints REST para diversas entidades o funcionalidades (como salud de la API, CRUD de usuarios, backups, etc.), cumpliendo satisfactoriamente el requisito establecido.
+Se implementaron pruebas unitarias y de integración utilizando el framework Jest. 
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{images/coverage.png}
+    \caption{Ejecución de las pruebas unitarias automatizadas y visualización de la cobertura del código mayor al 70\%.}
+    \label{fig:coverage}
+\end{figure}
+
+Como se observa en la Figura \ref{fig:coverage}, se ejecutó \texttt{npm run test -- --coverage}, generando un informe donde se confirma que los flujos de fallo y éxito fueron exitosos.
+
+\subsection*{2. Contenedorización con Docker}
+Para empaquetar el servidor, se creó un archivo \texttt{Dockerfile} utilizando una imagen base de Node (Alpine) e incluyendo el código del proyecto. Así mismo, el \texttt{.}dockerignore permitió excluir artefactos locales, como \texttt{node\_modules} y archivos de la base de datos de pruebas locales, reduciendo el tamaño final de la imagen.
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{images/dockerhub.png}
+    \caption{Imagen de contenedor desplegada con éxito y etiquetada en Docker Hub.}
+    \label{fig:dockerhub}
+\end{figure}
+
+\subsection*{3. Pipeline de GitHub Actions y EC2}
+El archivo \texttt{.github/workflows/main.yml} consolida la integración continua. Su función es verificar el entorno, ejecutar los tests, autenticarse en el Registry utilizando un Personal Access Token (PAT) mediante los secretos y finalmente conectarse a la máquina EC2 en la nube de AWS a través del puerto 22 para levantar los contenedores sobre el puerto 80 sin experimentar interrupciones del servicio.
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{images/github_actions.png}
+    \caption{Resultados exitosos (Checks en verde) del Pipeline de CI/CD ejecutado en GitHub Actions tras un push.}
+    \label{fig:actions}
+\end{figure}
+
+\newpage
+
+\section*{Conclusión}
+A lo largo del desarrollo de este proyecto integrador se logró consolidar de manera exitosa un Pipeline CI/CD automatizado, lo que permitió comprender y aplicar de manera práctica la integración de múltiples tecnologías de la cultura DevOps. La construcción de la API REST evidenció la importancia de las pruebas unitarias y la cobertura de código para mantener la calidad de la aplicación antes de que llegue al entorno del usuario final. Gracias al uso de GitHub Actions, quedó claro cómo las operaciones redundantes, tales como el testeo y compilación de imágenes de contenedor, pueden ser trasladadas a la nube y ejecutadas sin esfuerzo manual, permitiendo un enfoque en el desarrollo.
+
+Asimismo, la vinculación del despliegue en un entorno productivo como lo es una instancia de AWS EC2 demostró lo vital que es gestionar el software como componentes empaquetados e independientes mediante Docker. Este modelo simplifica la configuración en el servidor y protege los activos más sensibles de la organización mediante la gestión correcta de secretos y llaves de acceso SSH, sin que ninguna contraseña ni clave quede comprometida en el código público. En conjunto, las competencias obtenidas representan un paso fundamental hacia prácticas laborales altamente demandadas por la industria tecnológica moderna.
+
+\newpage
+
+\section*{Fuentes de Información}
+\begin{enumerate}
+    \item Documentación oficial de Docker. (2024). \textit{Dockerfile reference}. Recuperado de \url{https://docs.docker.com/engine/reference/builder/}
+    \item GitHub Docs. (2024). \textit{GitHub Actions Documentation}. Recuperado de \url{https://docs.github.com/en/actions}
+    \item Amazon Web Services (AWS). (2024). \textit{Amazon EC2 Documentation}. Recuperado de \url{https://docs.aws.amazon.com/ec2/index.html}
+    \item Express.js. (2024). \textit{Fast, unopinionated, minimalist web framework for Node.js}. Recuperado de \url{https://expressjs.com/}
+\end{enumerate}
+
+\end{document}
