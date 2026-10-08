@@ -17,7 +17,7 @@ const responseSchema = (data) => ({ statusCode: 200, data: data });
 
 // Endpoints GET
 // 2. Endpoint: Estado del servidor
-app.get('/api/', (req, res) => res.json(responseSchema("Hola Profesor, el Pipeline funciona perfecto")));
+app.get('/api/', (req, res) => res.json(responseSchema("prueba Pipeline funciona perfecto")));
 
 // 3. Endpoint: Listar usuarios
 app.get('/api/users', (req, res) => {
