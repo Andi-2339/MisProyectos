@@ -17,7 +17,7 @@ const responseSchema = (data) => ({ statusCode: 200, data: data });
 
 // Endpoints GET
 // 2. Endpoint: Estado del servidor
-app.get('/api/', (req, res) => res.json(responseSchema("API de prueba funcionando")));
+app.get('/api/', (req, res) => res.json(responseSchema("Hola Profesor, el Pipeline funciona perfecto")));
 
 // 3. Endpoint: Listar usuarios
 app.get('/api/users', (req, res) => {
@@ -45,8 +45,8 @@ app.post('/api/users', (req, res) => {
     if (!email.includes('@')) {
         return res.status(400).json(responseSchema({ error: "Error de usuario: Formato de email inválido" }));
     }
-    
-    db.run("INSERT INTO users (name, email) VALUES (?, ?)", [name, email], function(err) {
+
+    db.run("INSERT INTO users (name, email) VALUES (?, ?)", [name, email], function (err) {
         res.status(201).json(responseSchema({ id: this.lastID, name, email }));
     });
 });
@@ -74,8 +74,8 @@ app.put('/api/users/:id', (req, res) => {
     if (!name || !email) {
         return res.status(400).json(responseSchema({ error: "Error de usuario: Faltan datos para actualizar" }));
     }
-    
-    db.run("UPDATE users SET name = ?, email = ? WHERE id = ?", [name, email, req.params.id], function(err) {
+
+    db.run("UPDATE users SET name = ?, email = ? WHERE id = ?", [name, email, req.params.id], function (err) {
         if (err) return res.status(500).json({ error: err.message });
         if (this.changes === 0) return res.status(404).json(responseSchema({ error: "Usuario a actualizar no encontrado" }));
         res.json(responseSchema({ id: req.params.id, name, email }));
@@ -85,7 +85,7 @@ app.put('/api/users/:id', (req, res) => {
 // Endpoints DELETE
 // 9. Endpoint: Eliminar usuario por ID
 app.delete('/api/users/:id', (req, res) => {
-    db.run("DELETE FROM users WHERE id = ?", [req.params.id], function(err) {
+    db.run("DELETE FROM users WHERE id = ?", [req.params.id], function (err) {
         if (this.changes === 0) return res.status(404).json(responseSchema({ error: "Usuario a eliminar no encontrado" }));
         res.json(responseSchema(`Usuario ${req.params.id} eliminado`));
     });
@@ -106,17 +106,17 @@ const TCP_PORT = 6061;
 const tcpServer = net.createServer((socket) => {
     socket.on('data', (data) => {
         const message = data.toString().trim();
-        
+
         // Lógica para {insert:{"name":"...","email":"..."}}
         if (message.startsWith('{insert:') && message.endsWith('}')) {
             const jsonStr = message.slice(8, -1);
             try {
                 const { name, email } = JSON.parse(jsonStr);
-                db.run("INSERT INTO users (name, email) VALUES (?, ?)", [name, email], function(err) {
+                db.run("INSERT INTO users (name, email) VALUES (?, ?)", [name, email], function (err) {
                     if (err) socket.write(`Error: ${err.message}\n`);
                     else socket.write(`{statusCode: 200, data: {id: ${this.lastID}, name: "${name}", email: "${email}"}}\n`);
                 });
-            } catch(e) {
+            } catch (e) {
                 socket.write("{statusCode: 400, data: 'JSON Invalido'}\n");
             }
         }
