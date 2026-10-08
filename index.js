@@ -15,7 +15,7 @@ db.serialize(() => {
 // Helper para normalizar el JSON Schema solicitado
 const responseSchema = (data) => ({ statusCode: 200, data: data });
 
-// Endpoints GET
+// Endpoints GETc
 // 2. Endpoint: Estado del servidor
 app.get('/api/', (req, res) => res.json(responseSchema("prueba Pipeline funciona perfecto")));
 
@@ -33,7 +33,7 @@ app.get('/api/users/:id', (req, res) => {
 });
 
 // 5. Endpoint: Healthcheck
-app.get('/api/health', (req, res) => res.json(responseSchema({ status: "healthy" })));
+app.get('/api/health', (req, res) => res.json(responseSchema({ status: "Prueba 5 con healthy" })));
 
 // Endpoints POST
 // 6. Endpoint: Crear usuario
