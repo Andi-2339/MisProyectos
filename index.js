@@ -33,7 +33,7 @@ app.get('/api/users/:id', (req, res) => {
 });
 
 // 5. Endpoint: Healthcheck
-app.get('/api/health', (req, res) => res.json(responseSchema({ status: "Prueba 5 con healthy" })));
+app.get('/api/health', (req, res) => res.json(responseSchema({ status: "Prueba 5 con healthy uteq" })));
 
 // Endpoints POST
 // 6. Endpoint: Crear usuario
